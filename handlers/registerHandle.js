@@ -51,6 +51,7 @@ let testInsertUserData = async (request, response) => {
     let finResult = await userModel.findOne({email})
     if (finResult) {
       errMsg.emailCopyErr = '邮箱已经被注册'
+
       response.status(200).send({
         data: null,
         meta: {
