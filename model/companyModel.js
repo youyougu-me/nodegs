@@ -8,5 +8,5 @@ let companySchema = new Schema({
     required:true,
   }
 })
-module.exports = mongoose.model('allcompanys',companySchema)
+module.exports = mongoose.model('allcompanys',companySchema,'allcompanys')
 

@@ -23,5 +23,5 @@ let userSchema = new Schema({
     default:Date.now()
   }
 })
-module.exports = mongoose.model('users',userSchema)
+module.exports = mongoose.model('users',userSchema,'users')
 
