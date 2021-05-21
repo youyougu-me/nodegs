@@ -18,13 +18,15 @@ module.exports = async (req, res) => {
     res.status(200).send({
       data: null,
       meta: {
-        msg: 1
+        status: 1,
+        msg: "成功"
       }
     })
   } catch (err) {
     res.status(200).send({
       data: null,
       meta: {
+        status: 0,
         msg: err
       }
     })
