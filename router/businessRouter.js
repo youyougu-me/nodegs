@@ -3,7 +3,7 @@ let router = new Router()
 let registerHandle = require('../handlers/registerHandle')
 let loginHanlde = require('../handlers/loginHandle')
 let routerTestHandle = require('../handlers/routerTestHandle')
-let addSystemMenuHanlde = require('../handlers/addSystemMenuHanlde')
+let systemMenuHanlde = require('../handlers/systemMenuHanlde')
 
 
 // 路由拦截,采用next()放行
@@ -13,6 +13,8 @@ router.post('/api/register', registerHandle)
 // 登录
 router.post('/api/login', loginHanlde)
 // 添加菜单
-router.post('/api/addSystemMenu', addSystemMenuHanlde)
+router.post('/api/addSystemMenu', systemMenuHanlde.addSystemMenuHanlde)
+// 查询菜单
+router.post('/api/querySystemMenu', systemMenuHanlde.querySystemMenuHanlde)
 
 module.exports = router

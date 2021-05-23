@@ -1,7 +1,7 @@
 let systemMenuSchemaModel = require('../model/systemMenuModel')
 
 
-module.exports = async (req, res) => {
+let addSystemMenuHanlde = async (req, res) => {
   const {
     menuTitle, itemComponent, selectedIcon, menuPath, menuParentId, isBread, permissions
   } = req.body
@@ -32,6 +32,35 @@ module.exports = async (req, res) => {
     })
   }
 }
+
+let querySystemMenuHanlde = async (req, res) => {
+  try {
+    let findResult = await systemMenuSchemaModel.find({})
+    res.status(200).send({
+      data: findResult,
+      meta: {
+        status: 1,
+        msg: "成功"
+      }
+    })
+  } catch (e) {
+    res.status(200).send({
+      data: null,
+      meta: {
+        status: 0,
+        msg: e
+      }
+    })
+  }
+
+}
+
+let systemMenuHanlde = {}
+systemMenuHanlde.addSystemMenuHanlde = addSystemMenuHanlde
+systemMenuHanlde.querySystemMenuHanlde = querySystemMenuHanlde
+
+
+module.exports = systemMenuHanlde
 
 
 
