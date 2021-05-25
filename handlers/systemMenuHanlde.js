@@ -44,7 +44,7 @@ let querySystemMenuHanlde = async (req, res) => {
       }
     })
   } catch (e) {
-    res.status(200).send({
+    res.status(500).send({
       data: null,
       meta: {
         status: 0,
