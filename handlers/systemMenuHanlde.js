@@ -54,10 +54,36 @@ let querySystemMenuHanlde = async (req, res) => {
   }
 
 }
+let editSystemMenuHanlde = async (req, res) => {
+  let id_ = req.body._id
+  let updateObj = JSON.parse(JSON.stringify(req.body))
+  delete(updateObj._id)
+  systemMenuSchemaModel.findByIdAndUpdate(id_, updateObj, (err, suc) => {
+    if (err) {
+      res.status(500).send({
+        data: null,
+        meta: {
+          status: 0,
+          msg: err
+        }
+      })
+    } else {
+      res.status(200).send({
+        data: null,
+        meta: {
+          status: 1,
+          msg: "成功"
+        }
+      })
+    }
+  })
+
+}
 
 let systemMenuHanlde = {}
 systemMenuHanlde.addSystemMenuHanlde = addSystemMenuHanlde
 systemMenuHanlde.querySystemMenuHanlde = querySystemMenuHanlde
+systemMenuHanlde.editSystemMenuHanlde = editSystemMenuHanlde
 
 
 module.exports = systemMenuHanlde

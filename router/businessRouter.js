@@ -16,5 +16,7 @@ router.post('/api/login', loginHanlde)
 router.post('/api/addSystemMenu', systemMenuHanlde.addSystemMenuHanlde)
 // 查询菜单
 router.post('/api/querySystemMenu', systemMenuHanlde.querySystemMenuHanlde)
+// 编辑菜单
+router.post('/api/editSystemMenu', systemMenuHanlde.editSystemMenuHanlde)
 
 module.exports = router
