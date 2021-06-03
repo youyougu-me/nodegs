@@ -18,5 +18,7 @@ router.post('/api/addSystemMenu', systemMenuHanlde.addSystemMenuHanlde)
 router.post('/api/querySystemMenu', systemMenuHanlde.querySystemMenuHanlde)
 // 编辑菜单
 router.post('/api/editSystemMenu', systemMenuHanlde.editSystemMenuHanlde)
+// 删除菜单
+router.post('/api/deleteSystemMenuByIds', systemMenuHanlde.deleteSystemMenuHanlde)
 
 module.exports = router

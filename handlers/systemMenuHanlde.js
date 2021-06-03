@@ -57,7 +57,7 @@ let querySystemMenuHanlde = async (req, res) => {
 let editSystemMenuHanlde = async (req, res) => {
   let id_ = req.body._id
   let updateObj = JSON.parse(JSON.stringify(req.body))
-  delete(updateObj._id)
+  delete (updateObj._id)
   systemMenuSchemaModel.findByIdAndUpdate(id_, updateObj, (err, suc) => {
     if (err) {
       res.status(500).send({
@@ -80,10 +80,35 @@ let editSystemMenuHanlde = async (req, res) => {
 
 }
 
+let deleteSystemMenuHanlde = async (req, res) => {
+  let ids = req.body
+  console.log(ids)
+  systemMenuSchemaModel.remove({_id: {$in: ids}}, err => {
+    if (!err) {
+      res.status(200).send({
+        data: null,
+        meta: {
+          status: 1,
+          msg: "成功"
+        }
+      })
+    } else {
+      res.status(500).send({
+        data: null,
+        meta: {
+          status: 0,
+          msg: err
+        }
+      })
+    }
+  })
+}
+
 let systemMenuHanlde = {}
 systemMenuHanlde.addSystemMenuHanlde = addSystemMenuHanlde
 systemMenuHanlde.querySystemMenuHanlde = querySystemMenuHanlde
 systemMenuHanlde.editSystemMenuHanlde = editSystemMenuHanlde
+systemMenuHanlde.deleteSystemMenuHanlde = deleteSystemMenuHanlde
 
 
 module.exports = systemMenuHanlde
