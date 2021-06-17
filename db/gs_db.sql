@@ -54,7 +54,7 @@ db.getCollection("users").insert([ {
     _id: ObjectId("6059afbb7e52d73d2ca24983"),
     date: ISODate("2021-03-23T09:04:49.997Z"),
     email: "945029149@qq.com",
-    username: "谷双",
+    personName: "谷双",
     password: "123456",
     companyname: "重庆蓝账有限公司",
     __v: NumberInt("0")
@@ -63,7 +63,7 @@ db.getCollection("users").insert([ {
     _id: ObjectId("605da45e529f28f1a8b714cf"),
     date: ISODate("2021-03-26T08:34:33.315Z"),
     email: "945029148@qq.com",
-    username: "张三丰",
+    personName: "张三丰",
     password: "123456",
     companyname: "重庆蓝账有限公司",
     __v: NumberInt("0")

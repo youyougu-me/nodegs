@@ -1,4 +1,4 @@
-let userModel = require('../model/userModel')
+let systemPersonModel = require('../model/systemPersonModel')
 let jwt = require('jsonwebtoken')
 module.exports = async (request, response) => {
   const {email, password} = request.body
@@ -24,16 +24,16 @@ module.exports = async (request, response) => {
   }
 
   try {
-    let findResult = await userModel.findOne({email: email, password: password})
+    let findResult = await systemPersonModel.findOne({email: email, password: password})
     if (findResult) {
-      let username = findResult.username
+      let personName = findResult.personName
       errMsg.successErr = '登录成功'
       // 登录成功生成token返回给客户端
       // 第一个参数是组,第二个参数是密匙自己谁便定义
-      let token = jwt.sign({username}, 'iamtoken')
+      let token = jwt.sign({personName}, 'iamtoken')
       response.status(200).send({
         data: {
-          username: username,
+          personName: personName,
           token: token
         },
         meta: {

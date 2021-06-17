@@ -6,7 +6,7 @@ let userSchema = new Schema({
     required:true,
     unique:true
   },
-  username:{
+  personName:{
     type:String,
     required:true,
   },

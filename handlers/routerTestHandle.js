@@ -5,8 +5,8 @@ module.exports = async (req, res, next) => {
     return
   }
   const token = String(req.headers.authorization)
-  const username = jwt.decode(token, 'iamtoken')
-  if (token == 'undefined' || username == null) {
+  const personName = jwt.decode(token, 'iamtoken')
+  if (token == 'undefined' || personName == null) {
     res.status(400).send({
       data: null,
       meta: {
