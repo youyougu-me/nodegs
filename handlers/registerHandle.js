@@ -61,12 +61,12 @@ module.exports = async (request, response) => {
 
 // 定义向数据库插入数据的函数
 let testInsertUserData = (request, response) => {
-  let {companyId, companyName, personName, email, password} = request.body
+  let {email, personName, companyId, companyName, password, personRoleId, personDepartmentId} = request.body
   systemPersonModel.findOne({email: email}, (err, data) => {
     // 数据库无错误
     if (!err) {
       if (data === null) {
-        systemPersonModel.create({email, personName, companyId, companyName, password}, (err2, data2) => {
+        systemPersonModel.create({email, personName, companyId, companyName, password, personRoleId, personDepartmentId}, (err2, data2) => {
           if (err2) {
             response.status(500).send({
               data: null,
