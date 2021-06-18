@@ -1,83 +1,98 @@
 let companyModel = require('../model/companyModel')
-let personName = require('../model/systemPersonModel')
-let companyname
-let errMsg
+let systemPersonModel = require('../model/systemPersonModel')
 
 module.exports = async (request, response) => {
-  errMsg = {}
-  companyname = ''
-  const {email, personName, password, companyId} = request.body
-  const emailReg = /^[a-zA-Z0-9_]{2,16}@[a-zA-Z0-9]{2,16}\.com$/
-  const personNameReg = /[\u4e00-\u9fa5]/gm
-  const passwordReg = /^[a-zA-Z0-9_#]{6,16}$/
-
-  if (!personNameReg.test(personName)) {
-    errMsg.nickNameErr = '用户名输入不合法，应为中文'
-  }
-  if (!emailReg.test(email)) {
-    errMsg.emailErr = '邮箱输入不合法！要求邮箱用户名2-16位不包含特殊字符，邮箱主机名2-16位'
-  }
-  if (!passwordReg.test(password)) {
-    errMsg.passwordErr = '密码输入不合法，密码应为6-16位字符不包含特殊字符'
-  }
-  if (JSON.stringify(errMsg) !== '{}') {
-    response.status(200).send({
-      data: null,
-      meta: {
-        msg: errMsg
+  let {companyId, companyName} = request.body
+  // 数据库错误会在这里捕捉到,而不是try
+  // 查到了data会返回查到的数据,没查到data返回null,若数据库错误data返回undefined
+  // 只要数据库无错误,查没查到err都为null,数据库有错误则返回错误 err判断这次查询是否成功
+  companyModel.findOne({_id: companyId}, (err, data) => {
+      // 数据库无错误
+      if (!err) {
+        if (data === null) {
+          response.status(200).send({
+            data: null,
+            meta: {
+              msg: "公司校验码不存在"
+            }
+          })
+        }
+        // 找到了
+        else if (data.companyname !== companyName) {
+          response.status(200).send({
+            data: null,
+            meta: {
+              code: 0,
+              msg: "公司校验码与公司名称不对应"
+            }
+          })
+        }
+        // 成功了
+        else {
+          testInsertUserData(request, response)
+        }
+      } else {
+        // 数据库有错误
+        response.status(500).send({
+          data: null,
+          meta: {
+            msg: "后端服务错误"
+          }
+        })
       }
-    })
-    return
-  }
-  try {
-    let companyResult = await companyModel.findOne({_id: companyId})
-    companyname = companyResult.companyname
-    await testInsertUserData(request, response)
-  } catch (err) {
-    errMsg.companynameErr = '公司校验码错误'
-    response.status(200).send({
-      data: null,
-      meta: {
-        msg: errMsg
-      }
-    })
-  }
+    }
+  )
 }
 
 // 定义向数据库插入数据的函数
-let testInsertUserData = async (request, response) => {
-  const {email, personName, password} = request.body
+let testInsertUserData = (request, response) => {
+  let {companyId, companyName, personName, email, password} = request.body
   try {
-    let finResult = await userModel.findOne({email})
-    if (finResult) {
-      errMsg.emailCopyErr = '邮箱已经被注册'
-
-      response.status(200).send({
-        data: null,
-        meta: {
-          msg: errMsg
-        }
-      })
-    } else {
-      await userModel.create({email, personName, password, companyname})
-      errMsg.emailSuccessErr = '注册成功'
-      response.status(200).send({
-        data: null,
-        meta: {
-          msg: errMsg
-        }
-      })
-    }
+    systemPersonModel.findOne({email: email}, (err, data) => {
+      // console.log(err)
+      // console.log(data)
+      if (data === null) {
+        systemPersonModel.create({email, personName, companyId, companyName, password}, (errson, data) => {
+          if (!errson) {
+            response.status(200).send({
+              data: null,
+              meta: {
+                code: 1,
+                msg: "注册成功"
+              }
+            })
+          } else {
+            response.status(200).send({
+              data: null,
+              meta: {
+                code: 0,
+                msg: "注册失败"
+              }
+            })
+          }
+        })
+      } else {
+        response.status(200).send({
+          data: null,
+          meta: {
+            code: 0,
+            msg: "邮箱已存在"
+          }
+        })
+      }
+    })
   } catch (err) {
-    errMsg.emailDataWriteErr = '数据库连接不稳定'
-    response.status(200).send({
+    response.status(500).send({
       data: null,
       meta: {
-        msg: errMsg
+        msg: "后端服务错误"
       }
     })
   }
 }
+
+//  综上:前端.catch一定没有成功,可能是后端返回500 可能没返回
+//  前端.then也不一定成功,需要判断code
 
 
 
