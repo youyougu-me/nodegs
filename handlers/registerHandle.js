@@ -10,7 +10,7 @@ module.exports = async (request, response) => {
       // 数据库无错误
       if (!err) {
         if (data === null) {
-          response.status(200).send({
+          response.status(500).send({
             data: null,
             meta: {
               msg: "公司校验码不存在"
@@ -19,10 +19,9 @@ module.exports = async (request, response) => {
         }
         // 找到了
         else if (data.companyname !== companyName) {
-          response.status(200).send({
+          response.status(500).send({
             data: null,
             meta: {
-              code: 0,
               msg: "公司校验码与公司名称不对应"
             }
           })
@@ -57,25 +56,22 @@ let testInsertUserData = (request, response) => {
             response.status(200).send({
               data: null,
               meta: {
-                code: 1,
                 msg: "注册成功"
               }
             })
           } else {
-            response.status(200).send({
+            response.status(500).send({
               data: null,
               meta: {
-                code: 0,
                 msg: "注册失败"
               }
             })
           }
         })
       } else {
-        response.status(200).send({
+        response.status(500).send({
           data: null,
           meta: {
-            code: 0,
             msg: "邮箱已存在"
           }
         })
@@ -91,8 +87,7 @@ let testInsertUserData = (request, response) => {
   }
 }
 
-//  综上:前端.catch一定没有成功,可能是后端返回500 可能没返回
-//  前端.then也不一定成功,需要判断code
+// 一般来说,后端返回200就一定成功,500就给消息提示
 
 
 
